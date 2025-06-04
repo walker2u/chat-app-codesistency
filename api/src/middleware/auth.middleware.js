@@ -4,7 +4,7 @@ import User from "../models/user.model.js";
 
 dotenv.config();
 
-export const protectedRoute = (req, res, next) => {
+export const protectedRoute = async (req, res, next) => {
     try {
         const token = req.cookies.access_token;
         if (!token) return res.status(400).json({ message: "Unauthorized - No token Provided!" });
@@ -13,9 +13,11 @@ export const protectedRoute = (req, res, next) => {
 
         if (!decoded) return res.status(400).json({ message: "Unauthorized - Invalid Token!" });
 
-        const user = User.findById(decoded.userId).select("-password");
+        const user = await User.findById(decoded.userId).select("-password");
 
-        if (!user) return res.status(400).json({ message: "User not Found!" });
+        if (!user) {
+            return res.status(400).json({ message: "User not Found!" });
+        }
 
         req.user = user;
         next();
