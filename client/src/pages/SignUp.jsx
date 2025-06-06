@@ -21,7 +21,8 @@ function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const { isSigningUp, signup } = useAuthStore();
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     signup(formData);
   };
 
