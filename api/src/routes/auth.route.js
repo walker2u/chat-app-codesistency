@@ -10,7 +10,7 @@ app.post('/signup', signup);
 
 app.post('/logout', logout);
 
-app.post('/updateProfile', protectedRoute, updateProfile);
+app.put('/updateProfile', protectedRoute, updateProfile);
 
 app.post('/check', protectedRoute, checkAuth);
 

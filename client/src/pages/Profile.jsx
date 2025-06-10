@@ -1,7 +1,23 @@
-import { useAuthStore } from "../store/authStore.js";
+import { useState } from "react";
+import { useAuthStore } from "../store/useAuthStore.js";
+import { Camera, User, Mail } from "lucide-react";
 
 function Profile() {
   const { authUser, updateProfile, isUpdatingProfile } = useAuthStore();
+  const [selectedImg, setSelectedImg] = useState("");
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      const base64 = reader.result;
+      setSelectedImg(base64);
+      await updateProfile(base64);
+    };
+  };
+
   return (
     <div className="h-screen pt-20">
       <div className="max-w-2xl mx-auto p-4 py-8">
@@ -57,7 +73,7 @@ function Profile() {
                 Full Name
               </div>
               <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-                {authUser?.fullName}
+                {authUser?.fullname}
               </p>
             </div>
 

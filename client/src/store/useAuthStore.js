@@ -13,7 +13,7 @@ export const useAuthStore = create((set) => ({
         try {
             const response = await axiosInstance.post("/auth/check");
             console.log("[useAuthStore] checkAuth response", response);
-            set({ authUser: response });
+            set({ authUser: response.data });
         } catch (error) {
             console.log("Error in useAuthStore! ", error.message);
             set({ authUser: null })
@@ -65,6 +65,23 @@ export const useAuthStore = create((set) => ({
             console.log("[useAuthStore] error while login ,", error.message);
         } finally {
             set({ isSigningIn: false })
+        }
+    },
+    updateProfile: async (base64) => {
+        set({ isUpdatingProfile: true })
+        try {
+            const res = await axiosInstance.put("/auth/updateProfile", {
+                profilePic: base64
+            });
+
+            set({ authUser: res.data });
+            toast.success("Successfully updated Profile!");
+            console.log("[useAuthStore] updateProfile response", res);
+        } catch (error) {
+            toast.error("Something Bad Happened!");
+            console.log("[useAuthStore] error while updateProfile ,", error.message);
+        } finally {
+            set({ isUpdatingProfile: false })
         }
     }
 }));

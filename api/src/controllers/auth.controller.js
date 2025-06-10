@@ -76,7 +76,7 @@ export const logout = (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const { profilePic } = req.file;
+        const { profilePic } = req.body;
         if (!profilePic) return res.status(400).json({ message: `Please provide a Profile Pic!` });
 
         const userId = req.user._id;
