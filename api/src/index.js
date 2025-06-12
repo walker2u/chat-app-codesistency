@@ -1,3 +1,4 @@
+import { app, server } from './lib/socket.js';
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
@@ -10,7 +11,6 @@ import messageRouter from "./routes/mesasge.route.js"
 dotenv.config();
 
 const PORT = process.env.PORT;
-const app = express();
 app.use(express.json({
     limit: "5mb"
 }));
@@ -23,7 +23,7 @@ app.use(cors({
 app.use("/api/auth", authRouter);
 app.use("/api/message", messageRouter);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.info('Server running on port ', PORT);
     connectToMongo();
 });
